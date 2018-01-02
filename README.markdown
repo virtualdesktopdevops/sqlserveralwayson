@@ -1,6 +1,6 @@
 # sqlserveralwayson #
 
-This modules install a fully working SQL Server AlwaysOn cluster. It has been designed to install both primary replica nodes with th following features :
+This modules install a fully working SQL Server AlwaysOn cluster. It has been designed to install both primary replica nodes with the following features :
 - SPN creation on sql service account (service account not yet created by this module, schedulded in next release)
 - SQL server installation and initial configuration (MaxDop Firewall, Memory, Admin rights, ...)
 - Failover cluster creation (primary node) or join (replica node) with File Share witness
@@ -15,7 +15,7 @@ The database failover mecanism integrated in this module is SQL Server AlwaysOn.
 The module can be installed on a Standard, Datacenter, or Core version of Windows 2012R2 or Windows 2016.
 
 ## Usage
-- **setup_svc_username** : (string) Privileged account used by Puppet for installing the software and creating the failover cluster (spn creation, computer registration, local administrator privilèges needed) 
+- **setup_svc_username** : (string) Privileged account used by Puppet for installing the software and creating the failover cluster (spn creation, computer registration, local administrator privilèges needed)
 - **setup_svc_password** : (string) Password of the privileged account. Should be encrypted with hiera-eyaml.
 - **setupdir** : (string) Path of a folder containing the SQL Server installer (unarchive the ISO image in this folder).
 - **sa_password** : (string) SQL Server SA password for mixed mode SQL authentication configuration.
@@ -24,7 +24,7 @@ The module can be installed on a Standard, Datacenter, or Core version of Window
 - **sqlservicecredential_password** : (String) :  Password of the service account for the SQL service. Should be encrypted with hiera-eyaml.
 - **sqlagentservicecredential_username** : (String) Service account for the SQL Agent service
 - **sqlagentservicecredential_password** : (String) Password of the service account for the SQL Agent service. Should be encrypted with hiera-eyaml.
-- **sqladministratoraccounts** : (String[] Array) : Array of accounts to be made SQL administrators. 
+- **sqladministratoraccounts** : (String[] Array) : Array of accounts to be made SQL administrators.
 - **sqluserdbdir** : (String)(optionnal) Path for SQL database files. Default to 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Data'
 - **sqluserdblogdir** : (String)(optionnal) Path for SQL log files. Default to 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Data'
 - **sqlbackupdir** : (String)(optionnal) Path for SQL backup files. Default to 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Backup'
@@ -32,13 +32,26 @@ The module can be installed on a Standard, Datacenter, or Core version of Window
 - **sqltempdblogdir** : (String)(optionnal) Path for SQL TempDB log files. Default to 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Data'
 - **clusterName** : (String) Failover cluster name.
 - **clusterIP** : (String) Failover cluster IP address.
-- **fileShareWitness** : (String) Fileshare witness UNC path in the format'\\witness.company.local\witness$'. Needs to be writable by SQL nodes. 
+- **fileShareWitness** : (String) Fileshare witness UNC path in the format'\\witness.company.local\witness$'. Needs to be writable by SQL nodes.
 - **listenerIP** : (String) The IP address used for the availability group listener, in the format 192.168.10.45/255.255.252.0.
 - **role** : (String) Needs to be 'primary' for primary SQL nodes or 'secondary' for SQL replica nodes
 - **domainNetbiosName** : (String) Active Directory domain NETBIOS name
 
 
 ## Installing a Microsoft SQL Server AlwaysOn cluster
+The following example creates a 2 nodes SQL Server Always On Availability group :
+- SQL Server is installed on both nodes using the privileged **DOMAIN-TEST\svc-puppet** account.
+- SQL Server service and agent are configured to run using the **DOMAIN-TEST\svc-sql-puppet** service account.
+- Mixed mode logon is configured with the required "SA password" used to recover SQL Server access in case of windows authentication service failure
+- Windows Failover Cluster named **CLDB01** is created and configured with the **\\192.168.1.10\quorum** file share witness
+- Always On Availability group is created including endpoints and **CLDB01LI** listener (IP address : 192.168.1.61). The listener name is derived from the failover cluster name by the module
+
+The replica node is installed with the same parameters and joined to the **CLDB01** windows failover cluster and to the Avalability Group. **Notice the role => 'secondary'** which defines the role of the node.
+
+### Sample architecture :
+![Sample SQL Server Always On architecture](https://virtualdesktopdevops.github.io/images/sql-server-always-on-architecture.jpg)
+
+### Sample Puppet code :
 ~~~puppet
 #Primary node
 node 'SQL01' {
@@ -58,7 +71,7 @@ node 'SQL01' {
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
 	  role => 'primary',
-	  domainNetbiosName => 'DOMAIN-TEST' 
+	  domainNetbiosName => 'DOMAIN-TEST'
 	}
 }
 
@@ -80,11 +93,8 @@ node 'SQL02' {
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
 	  role => 'secondary',
-	  domainNetbiosName => 'DOMAIN-TEST' 
+	  domainNetbiosName => 'DOMAIN-TEST'
 	}
 }
 
 ~~~
-
-
-
