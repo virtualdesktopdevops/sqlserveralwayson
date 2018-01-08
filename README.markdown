@@ -14,6 +14,8 @@ The database failover mecanism integrated in this module is SQL Server AlwaysOn.
 
 The module can be installed on a Standard, Datacenter, or Core version of Windows 2012R2 or Windows 2016.
 
+**BREAKING CHANGE :** This module requires puppetlabs/dsc compiled with SQLServerDSC = 10.0.0.0
+
 ## Usage
 - **setup_svc_username** : (string) Privileged account used by Puppet for installing the software and creating the failover cluster (spn creation, computer registration, local administrator privilèges needed)
 - **setup_svc_password** : (string) Password of the privileged account. Should be encrypted with hiera-eyaml.

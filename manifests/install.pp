@@ -3,19 +3,19 @@ class sqlserveralwayson::install inherits sqlserveralwayson {
 	#reboot { 'before':
 	#  when => pending,
 	#}
-	
+
 	dsc_windowsfeature{'NET-Framework-Core':
 	  dsc_ensure => 'Present',
 	  dsc_name   => 'NET-Framework-Core',
 	  dsc_includeallsubfeature => true
 	}
-	
+
 	dsc_windowsfeature{'NET-Framework-45-Core':
 	  dsc_ensure => 'Present',
 	  dsc_name   => 'NET-Framework-45-Core',
 	  dsc_includeallsubfeature => true
 	}
-	
+
 	dsc_windowsfeature{'RSAT-AD-PowerShell':
     dsc_ensure => 'Present',
     dsc_name   => 'RSAT-AD-PowerShell'
@@ -25,31 +25,29 @@ class sqlserveralwayson::install inherits sqlserveralwayson {
     dsc_ensure => 'Present',
     dsc_name   => 'Failover-Clustering'
   }
-  
+
   dsc_windowsfeature{'RSATClusteringPowerShell':
     dsc_ensure => 'Present',
     dsc_name   => 'RSAT-Clustering-PowerShell',
     require => [ Dsc_windowsfeature['Failover-Clustering'] ]
   }
-  
+
   #Not working on Windows Server Core edition
   #dsc_windowsfeature{'RSATClusteringMgmt':
   #  dsc_ensure => 'Present',
   #  dsc_name   => 'RSAT-Clustering-Mgmt',
   #  require => [ Dsc_windowsfeature['Failover-Clustering'] ]
   #}
-  
+
   dsc_windowsfeature{'RSATClusteringCmdInterface':
     dsc_ensure => 'Present',
     dsc_name   => 'RSAT-Clustering-CmdInterface',
     require => [ Dsc_windowsfeature['RSATClusteringPowerShell'] ]
   }
-	
-	dsc_xsqlserversetup{ 'InstallSQLDefaultInstance':
+
+	dsc_sqlsetup{ 'InstallSQLDefaultInstance':
 	    dsc_action => 'Install',
       dsc_instancename => 'MSSQLSERVER',
-      #dsc_failoverclusternetworkname => $clusterFQDN,
-      #dsc_failoverclusteripaddress => $clusterIP,
       dsc_features => 'SQLENGINE,AS',
       dsc_sqlcollation => 'SQL_Latin1_General_CP1_CI_AS',
       dsc_securitymode => 'SQL',
@@ -81,11 +79,11 @@ class sqlserveralwayson::install inherits sqlserveralwayson {
       require => [ Dsc_windowsfeature['NET-Framework-Core'], Dsc_windowsfeature['NET-Framework-45-Core'],  Dsc_windowsfeature['Failover-Clustering'] ],
       notify => Reboot['after_run']
   }
-	
+
 	reboot { 'after_run':
 	  apply => finished,
 	}
-	
 
-  
+
+
 }
