@@ -39,7 +39,7 @@ class sqlserveralwayson::config inherits sqlserveralwayson {
 	  dsc_memberstoinclude => "${domainNetbiosName}\\Domain Admins",
 	  dsc_servername => $hostname,
 	  dsc_instancename => 'MSSQLSERVER',
-	  require => Dsc_xsqlserverlogin['DomainAdminsLogin'],
+	  require => Dsc_sqlserverlogin['DomainAdminsLogin'],
 	  dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
 	}
 
