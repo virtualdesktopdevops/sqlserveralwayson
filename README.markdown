@@ -1,6 +1,6 @@
 # sqlserveralwayson #
 
-This modules install a fully working SQL Server AlwaysOn cluster. It has been designed to install both primary replica nodes with the following features :
+This modules installs a fully working SQL Server AlwaysOn cluster. It has been designed to install both primary replica nodes with the following features :
 - SPN creation on sql service account (service account not yet created by this module, schedulded in next release)
 - SQL server installation and initial configuration (MaxDop Firewall, Memory, Admin rights, ...)
 - Failover cluster creation (primary node) or join (replica node) with File Share witness
@@ -22,9 +22,9 @@ The module can be installed on a Standard, Datacenter, or Core version of Window
 - **setupdir** : (string) Path of a folder containing the SQL Server installer (unarchive the ISO image in this folder).
 - **sa_password** : (string) SQL Server SA password for mixed mode SQL authentication configuration.
 - **productkey** : (string)(optionnal) Product key for licensed installations.
-- **sqlservicecredential_username** : (String) Service account for the SQL service
+- **sqlservicecredential_username** : (String) Service account for the SQL service **WITHOUT** Netbios Domain Name prefix
 - **sqlservicecredential_password** : (String) :  Password of the service account for the SQL service. Should be encrypted with hiera-eyaml.
-- **sqlagentservicecredential_username** : (String) Service account for the SQL Agent service
+- **sqlagentservicecredential_username** : (String) Service account for the SQL Agent service **WITHOUT** Netbios Domain Name prefix
 - **sqlagentservicecredential_password** : (String) Password of the service account for the SQL Agent service. Should be encrypted with hiera-eyaml.
 - **sqladministratoraccounts** : (String[] Array) : Array of accounts to be made SQL administrators.
 - **sqluserdbdir** : (String)(optionnal) Path for SQL database files. Default to 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Data'
@@ -63,9 +63,9 @@ node 'SQL01' {
 	  setupdir=>'\\fileserver.local\SQLServer2012.en',
 	  sa_password=>'P@ssw0rd',
 	  productkey => 'key-key-key',
-	  sqlservicecredential_username => 'DOMAIN-TEST\svc-sql-puppet',
+	  sqlservicecredential_username => 'svc-sql-puppet',
 	  sqlservicecredential_password=>'P@ssw0rd',
-	  sqlagentservicecredential_username => 'DOMAIN-TEST\svc-sql-puppet',
+	  sqlagentservicecredential_username => 'svc-sql-puppet',
 	  sqlagentservicecredential_password => 'P@ssw0rd',
 	  sqladministratoraccounts => [ 'DOMAIN-TEST\svc-puppet', 'DOMAIN-TEST\Administrator' ],
 	  clusterName => 'CLDB01',
@@ -73,6 +73,7 @@ node 'SQL01' {
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
 	  role => 'primary',
+		domainName => 'DOMAIN-TEST.COM',
 	  domainNetbiosName => 'DOMAIN-TEST'
 	}
 }
@@ -85,9 +86,9 @@ node 'SQL02' {
 	  setupdir=>'\\fileserver.local\SQLServer2012.en',
 	  sa_password=>'P@ssw0rd',
 	  productkey => 'key-key-key',
-	  sqlservicecredential_username => 'DOMAIN-TEST\svc-sql-puppet',
+	  sqlservicecredential_username => 'svc-sql-puppet',
 	  sqlservicecredential_password=>'P@ssw0rd',
-	  sqlagentservicecredential_username => 'DOMAIN-TEST\svc-sql-puppet',
+	  sqlagentservicecredential_username => 'svc-sql-puppet',
 	  sqlagentservicecredential_password => 'P@ssw0rd',
 	  sqladministratoraccounts => [ 'DOMAIN-TEST\svc-puppet', 'DOMAIN-TEST\Administrator' ],
 	  clusterName => 'CLDB01',
@@ -95,6 +96,7 @@ node 'SQL02' {
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
 	  role => 'secondary',
+		domainName => 'DOMAIN-TEST.COM',
 	  domainNetbiosName => 'DOMAIN-TEST'
 	}
 }
