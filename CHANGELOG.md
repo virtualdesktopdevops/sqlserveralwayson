@@ -3,6 +3,7 @@
 ## Unreleased
 - **BREAKING CHANGE** : Require puppetlabs/dsc compiled with SQLServerDSC = 10.0.0.0
 - **BREAKING CHANGE** : Changed $sqlservicecredential_username and  $sqlagentservicecredential_username format. User accounts now required **WITHOUT** Netbios Domain Name prefix.
+- **BREAKING CHANGE** : Removed $domainName class parameter. Used facts instead.
 
 ## Version 1.1.0
 - Initial release

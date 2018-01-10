@@ -73,7 +73,6 @@ node 'SQL01' {
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
 	  role => 'primary',
-		domainName => 'DOMAIN-TEST.COM',
 	  domainNetbiosName => 'DOMAIN-TEST'
 	}
 }
@@ -96,7 +95,6 @@ node 'SQL02' {
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
 	  role => 'secondary',
-		domainName => 'DOMAIN-TEST.COM',
 	  domainNetbiosName => 'DOMAIN-TEST'
 	}
 }
