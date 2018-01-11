@@ -28,7 +28,7 @@ class sqlserveralwayson::config inherits sqlserveralwayson {
 		dsc_ensure => 'Present',
 		dsc_servername => $hostname,
 		dsc_instancename => 'MSSQLSERVER',
-		dsc_name => "${domainNetbiosName}\\Domain Admins",
+		dsc_name => "${domainnetbiosname}\\Domain Admins",
 		dsc_logintype => 'WindowsGroup',
 		dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
 	}
@@ -36,7 +36,7 @@ class sqlserveralwayson::config inherits sqlserveralwayson {
 	dsc_sqlserverrole{'AddDomainAdminsSQLSysadmin':
 		dsc_ensure => 'Present',
 		dsc_serverrolename => 'sysadmin',
-		dsc_memberstoinclude => "${domainNetbiosName}\\Domain Admins",
+		dsc_memberstoinclude => "${domainnetbiosname}\\Domain Admins",
 		dsc_servername => $hostname,
 		dsc_instancename => 'MSSQLSERVER',
 		require => Dsc_sqlserverlogin['DomainAdminsLogin'],
@@ -48,7 +48,7 @@ class sqlserveralwayson::config inherits sqlserveralwayson {
 		dsc_ensure => 'Present',
 		dsc_servername => $hostname,
 		dsc_instancename => 'MSSQLSERVER',
-		dsc_name => "${domainNetbiosName}\\$sqlservicecredential_username",
+		dsc_name => "${domainnetbiosname}\\$sqlservicecredential_username",
 		dsc_logintype => 'WindowsUser',
 		dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
 	}

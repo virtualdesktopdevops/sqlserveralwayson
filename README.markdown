@@ -22,9 +22,9 @@ The module can be installed on a Standard, Datacenter, or Core version of Window
 - **setupdir** : (string) Path of a folder containing the SQL Server installer (unarchive the ISO image in this folder).
 - **sa_password** : (string) SQL Server SA password for mixed mode SQL authentication configuration.
 - **productkey** : (string)(optionnal) Product key for licensed installations.
-- **sqlservicecredential_username** : (String) Service account for the SQL service **WITHOUT** Netbios Domain Name prefix
+- **sqlservicecredential_username** : (String) Domain service account for the SQL service **WITHOUT** Netbios Domain Name prefix. The account will be automatically created in Active Directory by the module. MSSQLSvc/fqdn_of_sql_server_node SPN will be associated with the service account.
 - **sqlservicecredential_password** : (String) :  Password of the service account for the SQL service. Should be encrypted with hiera-eyaml.
-- **sqlagentservicecredential_username** : (String) Service account for the SQL Agent service **WITHOUT** Netbios Domain Name prefix
+- **sqlagentservicecredential_username** : (String) Domain service account for the SQL Agent service **WITHOUT** Netbios Domain Name prefix. The account will be automatically created in Active Directory by the module.
 - **sqlagentservicecredential_password** : (String) Password of the service account for the SQL Agent service. Should be encrypted with hiera-eyaml.
 - **sqladministratoraccounts** : (String[] Array) : Array of accounts to be made SQL administrators.
 - **sqluserdbdir** : (String)(optionnal) Path for SQL database files. Default to 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Data'
@@ -37,7 +37,6 @@ The module can be installed on a Standard, Datacenter, or Core version of Window
 - **fileShareWitness** : (String) Fileshare witness UNC path in the format'\\witness.company.local\witness$'. Needs to be writable by SQL nodes.
 - **listenerIP** : (String) The IP address used for the availability group listener, in the format 192.168.10.45/255.255.252.0.
 - **role** : (String) Needs to be 'primary' for primary SQL nodes or 'secondary' for SQL replica nodes
-- **domainNetbiosName** : (String) Active Directory domain NETBIOS name
 
 
 ## Installing a Microsoft SQL Server AlwaysOn cluster
@@ -72,8 +71,7 @@ node 'SQL01' {
 	  clusterIP => '192.168.1.60',
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
-	  role => 'primary',
-	  domainNetbiosName => 'DOMAIN-TEST'
+	  role => 'primary'
 	}
 }
 
@@ -94,8 +92,7 @@ node 'SQL02' {
 	  clusterIP => '192.168.1.60',
 	  fileShareWitness=> '\\192.168.1.10\quorum',
 	  listenerIP => '192.168.1.61/255.255.255.0',
-	  role => 'secondary',
-	  domainNetbiosName => 'DOMAIN-TEST'
+	  role => 'secondary'
 	}
 }
 

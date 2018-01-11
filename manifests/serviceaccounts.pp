@@ -1,4 +1,5 @@
 class sqlserveralwayson::serviceaccounts inherits sqlserveralwayson {
+
 	#Needed for ActiveDirectory remote management using Powershell
 	dsc_windowsfeature{ 'RSAT-AD-Powershell':
 		dsc_ensure => 'Present',
