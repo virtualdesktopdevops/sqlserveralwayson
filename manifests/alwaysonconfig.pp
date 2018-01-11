@@ -55,6 +55,7 @@ class sqlserveralwayson::alwaysonconfig inherits sqlserveralwayson {
       dsc_name => $clusterName,
       dsc_servername => $hostname,
       dsc_instancename => 'MSSQLSERVER',
+      dsc_availabilitymode => 'SynchronousCommit',
       dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password},
       require => [ Dsc_sqlalwaysonservice['EnableAlwaysOn'] , Dsc_sqlserverendpoint['SQLServerEndpoint'] ]
     }
