@@ -1,6 +1,6 @@
 # sqlserveralwayson #
 
-This modules installs a fully working SQL Server AlwaysOn cluster. It has been designed to install both primary replica nodes with the following features :
+This modules installs a fully working Microsoft SQL Server AlwaysOn cluster. It has been designed to install both primary replica nodes with the following features :
 - SPN creation on sql service account (service account not yet created by this module, schedulded in next release)
 - SQL server installation and initial configuration (MaxDop Firewall, Memory, Admin rights, ...)
 - Failover cluster creation (primary node) or join (replica node) with File Share witness
@@ -12,9 +12,9 @@ The default MSSQLSERVER SQL Server instance is created during installation. This
 
 The database failover mecanism integrated in this module is SQL Server AlwaysOn.
 
-The module can be installed on a Standard, Datacenter, or Core version of Windows 2012R2 or Windows 2016.
+The module can be installed on a Standard, Datacenter, Core version of Windows 2012R2 or Windows 2016.
 
-**BREAKING CHANGE :** This module requires puppetlabs/dsc compiled with SQLServerDSC = 10.0.0.0
+**BREAKING CHANGE :** This module requires puppetlabs/dsc compiled with SQLServerDSC >= 10.0.0.0
 
 ## Usage
 - **setup_svc_username** : (string) Privileged account used by Puppet for installing the software and creating the failover cluster (spn creation, computer registration, local administrator privilèges needed)
