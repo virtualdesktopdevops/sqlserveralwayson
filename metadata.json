@@ -1,17 +1,17 @@
 {
-  "author": "citrixdeployment",
+  "author": "virtualdesktopdevops",
   "dependencies": [
-	{ 
-		"name": "puppetlabs/powershell", 
+	{
+		"name": "puppetlabs/powershell",
 		"version_requirement": ">= 1.0.3"
 	},
-	{ 
-		"name": "puppetlabs/dsc", 
-		"version_requirement": ">= 1.4.0"
+	{
+		"name": "puppetlabs/dsc",
+		"version_requirement": ">= 1.5.0"
 	}
   ],
   "license": "Apache-2.0",
-  "name": "citrixdeployment-sqlserveralwayson",
+  "name": "virtualdesktopdevops-sqlserveralwayson",
   "operatingsystem_support": [
     {
       "operatingsystem": "windows",
@@ -21,21 +21,23 @@
       ]
     }
   ],
-  "project_page": "https://www.citrixdeployment.com",
+  "project_page": "http://www.virtualdesktopdevops.com/",
   "requirements": [
   	{
       "name": "puppet",
       "version_requirement": ">= 3.8.0 < 6.0.0"
     }
   ],
-  "source": "https://www.citrixdeployment.com",
-  "summary": "SQL Server deployment with AlwaysOn clustering features",
+  "source": "https://virtualdesktopdevops.github.io/sqlserveralwayson/",
+  "summary": "Microsoft SQL Server puppet module with AlwaysOn clustering features",
   "tags": [
     "powershell",
     "dsc",
     "sql-server",
+    "microsoft",
+    "cluster",
     "alwayson",
     "sql"
   ],
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
