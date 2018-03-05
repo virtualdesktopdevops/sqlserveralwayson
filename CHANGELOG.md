@@ -1,6 +1,6 @@
 # Changelog - sqlserveralwayson #
 
-## Version 1.2.0
+## Version 2.0.0
 - **BREAKING CHANGE** : Require puppetlabs/dsc compiled with SQLServerDSC >= 10.0.0.0
 - **BREAKING CHANGE** : Changed $sqlservicecredential_username and  $sqlagentservicecredential_username format. User accounts now required **WITHOUT** Netbios Domain Name prefix.
 - **BREAKING CHANGE** : Removed $domainName class parameter. Used facts instead.
