@@ -1,47 +1,48 @@
+#Class configuring SQL Server and system settings after installation
 class sqlserveralwayson::config inherits sqlserveralwayson {
 
-	#Network configuration
-	dsc_sqlservernetwork{ 'ConfigureSQLNetwork':
-		dsc_instancename => 'MSSQLSERVER',
-		dsc_protocolname => "tcp",
-		dsc_isenabled => true,
-		dsc_tcpport => '1433',
-		dsc_restartservice => true
-	}
+  #Network configuration
+  dsc_sqlservernetwork{ 'ConfigureSQLNetwork':
+    dsc_instancename   => 'MSSQLSERVER',
+    dsc_protocolname   => 'tcp',
+    dsc_isenabled      => true,
+    dsc_tcpport        => '1433',
+    dsc_restartservice => true
+  }
 
-	#Windows Firewall configuration
-	dsc_sqlwindowsfirewall{'CreateFirewallRules':
-		dsc_ensure => 'Present',
-		dsc_features => 'SQLENGINE,AS',
-		dsc_instancename => 'MSSQLSERVER',
-		dsc_sourcepath => $setupdir,
-		dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
-	}
+  #Windows Firewall configuration
+  dsc_sqlwindowsfirewall{'CreateFirewallRules':
+    dsc_ensure               => 'Present',
+    dsc_features             => 'SQLENGINE,AS',
+    dsc_instancename         => 'MSSQLSERVER',
+    dsc_sourcepath           => $sqlserveralwayson::setupdir,
+    dsc_psdscrunascredential => {'user' => $sqlserveralwayson::setup_svc_username, 'password' => $sqlserveralwayson::setup_svc_password}
+  }
 
-	#Disable UAC
-	#dsc_xuac{'UACNeverNotifyAndDisableAll':
-	#  dsc_setting => 'NeverNotifyAndDisableAll'
-	#}
+  #Disable UAC
+  #dsc_xuac{'UACNeverNotifyAndDisableAll':
+  #  dsc_setting => 'NeverNotifyAndDisableAll'
+  #}
 
-	#Admin access configuration
-	dsc_sqlserverlogin{'DomainAdminsLogin':
-		dsc_ensure => 'Present',
-		dsc_servername => $hostname,
-		dsc_instancename => 'MSSQLSERVER',
-		dsc_name => "${domainnetbiosname}\\Domain Admins",
-		dsc_logintype => 'WindowsGroup',
-		dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
-	}
+  #Admin access configuration
+  dsc_sqlserverlogin{'DomainAdminsLogin':
+    dsc_ensure               => 'Present',
+    dsc_servername           => $facts['hostname'],
+    dsc_instancename         => 'MSSQLSERVER',
+    dsc_name                 => "${facts['domainnetbiosname']}\\Domain Admins",
+    dsc_logintype            => 'WindowsGroup',
+    dsc_psdscrunascredential => {'user' => $sqlserveralwayson::setup_svc_username, 'password' => $sqlserveralwayson::setup_svc_password}
+  }
 
-	dsc_sqlserverrole{'AddDomainAdminsSQLSysadmin':
-		dsc_ensure => 'Present',
-		dsc_serverrolename => 'sysadmin',
-		dsc_memberstoinclude => "${domainnetbiosname}\\Domain Admins",
-		dsc_servername => $hostname,
-		dsc_instancename => 'MSSQLSERVER',
-		require => Dsc_sqlserverlogin['DomainAdminsLogin'],
-		dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
-	}
+  dsc_sqlserverrole{'AddDomainAdminsSQLSysadmin':
+    dsc_ensure               => 'Present',
+    dsc_serverrolename       => 'sysadmin',
+    dsc_memberstoinclude     => "${facts['domainnetbiosname']}\\Domain Admins",
+    dsc_servername           => $facts['hostname'],
+    dsc_instancename         => 'MSSQLSERVER',
+    require                  => Dsc_sqlserverlogin['DomainAdminsLogin'],
+    dsc_psdscrunascredential => {'user' => $sqlserveralwayson::setup_svc_username, 'password' => $sqlserveralwayson::setup_svc_password}
+  }
 
 	#Service account access configuration. Mandatory for AlwaysOn replica login capability on HADR server endpoint
 	dsc_sqlserverlogin{'ServiceAccountLogin':

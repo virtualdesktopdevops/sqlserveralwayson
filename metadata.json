@@ -29,6 +29,7 @@
     }
   ],
   "source": "https://virtualdesktopdevops.github.io/sqlserveralwayson/",
+  "issues_url": "https://github.com/virtualdesktopdevops/sqlserveralwayson/issues",
   "summary": "Microsoft SQL Server puppet module with AlwaysOn clustering features",
   "tags": [
     "powershell",
