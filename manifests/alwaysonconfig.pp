@@ -43,7 +43,7 @@ class sqlserveralwayson::alwaysonconfig inherits sqlserveralwayson {
 		dsc_servername => $hostname,
 		dsc_instancename => 'MSSQLSERVER',
 		dsc_name => 'HADR',
-		dsc_principal => "${domainnetbiosname}\\$sqlservicecredential_username",
+		dsc_principal => "${domainnetbiosname}\\${sqlservicecredential_username}",
 		dsc_permission => 'CONNECT',
 		dsc_psdscrunascredential => {'user' => $setup_svc_username, 'password' => $setup_svc_password}
   }
